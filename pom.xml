@@ -13,14 +13,17 @@
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <spring-boot.version>2.6.7</spring-boot.version>
+        <spring-boot.version>2.7.15</spring-boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot-starter-web.version>2.3.4.RELEASE</spring-boot-starter-web.version>
-        <spring-boot-maven-plugin.version>2.3.4.RELEASE</spring-boot-maven-plugin.version>
-        <postgres.version>42.2.16</postgres.version>
+        <postgres.version>42.5.4</postgres.version>
         <java-validation.version>2.0.1.Final</java-validation.version>
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
     </properties>
+
+    <modules>
+        <module>infrastructure-domain</module>
+        <module>business-domain</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -45,12 +48,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
     </dependencies>
 
@@ -67,7 +65,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot-maven-plugin.version}</version>
+                <version>${spring-boot.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -75,28 +73,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${dockerfile-maven-version}</version>
-                <executions>
-                    <execution>
-                        <id>build-docker-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <repository>payment-chain/microservice-docker-${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
