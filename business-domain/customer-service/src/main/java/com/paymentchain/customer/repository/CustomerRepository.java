@@ -1,5 +1,6 @@
 package com.paymentchain.customer.repository;
 
+import com.paymentchain.commons.statuses.CustomerStatus;
 import com.paymentchain.customer.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
@@ -20,5 +23,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     @Query(value = GET_CUSTOMERS_BY_FILTER, countQuery = COUNT_CUSTOMERS_BY_FILTER, nativeQuery = true)
     Page<Customer> filterCustomers(@Param("name") String name, @Param("phone") String phone, @Param("status") String status, Pageable pageable);
+
+    Optional<Customer> findCustomerByNameIgnoringCaseAndStatus(String name, CustomerStatus status);
+
+    Optional<Customer> findCustomerByIdNotAndNameIgnoringCaseAndStatus(Long id, String name, CustomerStatus status);
 
 }
